@@ -4,6 +4,8 @@
     uv run python scripts/guess.py --tag 2000 --image shot.png
 
     # from the screen (needs macOS Screen Recording permission)
+    # waits --delay seconds (default 3) before capturing so you can switch
+    # to the game window first
     uv run python scripts/guess.py --tag 2000
 
     # just save a screenshot, to validate the crop or start an eval set
@@ -29,10 +31,17 @@ def main() -> int:
     parser.add_argument("--image", help="read this file instead of capturing")
     parser.add_argument("--monitor", type=int, default=1)
     parser.add_argument("--top-k", type=int, default=5)
+    parser.add_argument("--backend", default="auto", choices=["auto", "pytorch", "coreml"],
+                        help="vision encoder to use (default: auto -- CoreML if "
+                             "artifacts/streetclip_vision.mlpackage exists, else PyTorch)")
+    parser.add_argument("--coreml-package", default="artifacts/streetclip_vision.mlpackage")
     parser.add_argument("--crop", default="geoguessr_16_9",
                         help="crop preset; use full_frame for uncropped images")
     parser.add_argument("--save-only", metavar="PATH",
                         help="capture and save, then exit without predicting")
+    parser.add_argument("--delay", type=float, default=3.0,
+                        help="seconds to wait before capturing, so you can switch "
+                             "to the game first (default: 3; ignored with --image)")
     parser.add_argument("--preview-crop", action="store_true",
                         help="write <image>.crop.png with the crop drawn on it")
     parser.add_argument("--list-monitors", action="store_true")
@@ -53,6 +62,9 @@ def main() -> int:
     if args.save_only:
         from geoguessr.serve.capture import save_screenshot
 
+        if args.delay:
+            print(f"capturing in {args.delay:.0f}s -- switch to the game now...")
+            time.sleep(args.delay)
         print(f"saved {save_screenshot(args.save_only, monitor=args.monitor)}")
         return 0
 
@@ -65,6 +77,9 @@ def main() -> int:
     else:
         from geoguessr.serve.capture import grab_screen
 
+        if args.delay:
+            print(f"capturing in {args.delay:.0f}s -- switch to the game now...")
+            time.sleep(args.delay)
         started = time.perf_counter()
         image = grab_screen(monitor=args.monitor)
         source = f"screen ({(time.perf_counter() - started) * 1000:.0f}ms grab)"
@@ -79,7 +94,24 @@ def main() -> int:
     # --- predict ------------------------------------------------------------
     from geoguessr.serve.predictor import Predictor, format_guesses
 
-    predictor = Predictor.from_artifacts(tag=args.tag, crop=crop)
+    backbone = None
+    coreml_path = Path(args.coreml_package)
+    use_coreml = args.backend == "coreml" or (args.backend == "auto" and coreml_path.exists())
+
+    if args.backend == "coreml" and not coreml_path.exists():
+        print(f"error: no CoreML package at {coreml_path}. "
+              "Run scripts/convert_coreml.py first.", file=sys.stderr)
+        return 1
+
+    if use_coreml:
+        from geoguessr.serve.coreml import CoreMLBackbone
+
+        backbone = CoreMLBackbone(coreml_path)
+    elif args.backend == "auto":
+        print(f"note: no CoreML package at {coreml_path}, falling back to PyTorch "
+              "(slower -- run scripts/convert_coreml.py to speed this up)")
+
+    predictor = Predictor.from_artifacts(tag=args.tag, backbone=backbone, crop=crop)
     print(predictor.describe())
     print(f"source       {source}  ({image.width}x{image.height})")
     print()

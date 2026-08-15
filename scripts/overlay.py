@@ -2,7 +2,7 @@
 
     uv run python scripts/overlay.py --tag 20000
 
-Press the hotkey (default cmd+shift+G) to read the screen and rank countries.
+Press the hotkey (default `) to read the screen and rank countries.
 Escape closes it; drag the window to move it.
 
 macOS needs two permissions for the host terminal, and neither takes effect
@@ -22,7 +22,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__,
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--tag", default="20000", help="artifact tag to load")
-    parser.add_argument("--hotkey", default="<cmd>+<shift>+g")
+    parser.add_argument("--hotkey", default="`")
     parser.add_argument("--monitor", type=int, default=1)
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--crop", default="geoguessr_16_9")

@@ -31,7 +31,7 @@ if TYPE_CHECKING:
 
 __all__ = ["Overlay", "DEFAULT_HOTKEY"]
 
-DEFAULT_HOTKEY = "<cmd>+<shift>+g"
+DEFAULT_HOTKEY = "`"
 
 _BG = "#11141a"
 _FG = "#e8ecf2"
@@ -97,7 +97,7 @@ class Overlay:
                 kind, payload = self._events.get_nowait()
 
                 if kind == "working":
-                    self._status.config(text="reading screen...", fg=_ACCENT)
+                    self._status.config(text="calculating...", fg=_ACCENT)
                 elif kind == "result":
                     self._render(payload)
                     self._busy = False
@@ -140,7 +140,7 @@ class Overlay:
         frame.pack()
 
         self._body = tk.Label(
-            frame, text=f"press {self.hotkey}", font=("Menlo", 13), bg=_BG,
+            frame, text="waiting for input", font=("Menlo", 13), bg=_BG,
             fg=_MUTED, justify="left", anchor="w",
         )
         self._body.pack(anchor="w")
