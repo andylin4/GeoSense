@@ -497,10 +497,16 @@ Marino, Gibraltar, Macau, Guam, American Samoa, Northern Marianas) were dropped 
 
 ### Open, in priority order
 
-1. **Real evaluation.** Nothing here is trustworthy until the model is measured on game
-   screenshots. Every ship criterion in Section 10 is defined on data we cannot currently read.
-2. **Crop validation.** `GEOGUESSR_16_9` is an unverified estimate. One screenshot settles it, and
-   it gates both serving and any eval number.
+1. **Real evaluation.** GeoGuessr-50k is now downloaded (6.8GB, 124 country folders) and the crop
+   is verified against it (item 2). Still needed: a manifest builder for its
+   `compressed_dataset/<Country>/canvas_*.jpg` layout (unlike OSV-5M, filenames aren't numeric
+   ids, so `attach_paths` doesn't apply as-is) and a run through the Phase 0 harness.
+2. **Crop validation.** `GEOGUESSR_16_9` was verified 2026-08-15 against two real GeoGuessr-50k
+   screenshots (France, Japan; both a fixed 1536x662 render) -- corrected to `top=0.12,
+   bottom=0.55`, confirmed clean of all HUD elements. Still open: this dataset's images are a
+   scripted, fixed-size capture, not a real 1920x1080 fullscreen browser at 16:9 as originally
+   assumed -- the same fractional crop is **not** yet validated against a live `mss` screen
+   capture, which may run at a different resolution/aspect ratio. That check still gates serving.
 3. **Framing decision** (pitch/heading/fov) before any paid scraping -- re-scraping costs again.
 4. **Run the CoreML conversion.** coremltools 9.0 warns it is untested against torch 2.13.
 5. Scale past 20k, per the step-and-measure rule in decision #9.

@@ -63,10 +63,12 @@ class Predictor:
         self.scaler = scaler
         self.crop = crop
 
-        if warn_unverified_crop and "UNVERIFIED" in crop.note:
+        if warn_unverified_crop and (
+            "UNVERIFIED" in crop.note or "NOT re-validated against a live" in crop.note
+        ):
             warnings.warn(
-                f"crop preset {crop.name!r} is an unvalidated estimate of where "
-                "the GeoGuessr HUD sits. Run CropSpec.preview() against a real "
+                f"crop preset {crop.name!r} is not validated against a live "
+                "screen capture. Run CropSpec.preview() against a real "
                 "screenshot before trusting these percentages.",
                 stacklevel=2,
             )

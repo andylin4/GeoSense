@@ -95,7 +95,7 @@ class TestCropIsApplied:
         assert backbone.seen_sizes == [(320, 180)]
 
     def test_unverified_crop_warns(self, head):
-        with pytest.warns(UserWarning, match="unvalidated estimate"):
+        with pytest.warns(UserWarning, match="not validated against a live"):
             Predictor(StubBackbone(), head, crop=GEOGUESSR_16_9)
 
     def test_verified_crop_does_not_warn(self, head):

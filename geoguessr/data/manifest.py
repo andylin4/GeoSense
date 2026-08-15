@@ -19,6 +19,7 @@ relabeling free.
 
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 
 import polars as pl
@@ -28,6 +29,7 @@ from .countries import OTHER, STREET_VIEW_COUNTRIES, to_code
 __all__ = [
     "MANIFEST_COLUMNS",
     "build_manifest",
+    "build_manifest_from_country_folders",
     "subsample",
     "attach_paths",
     "write_manifest",
@@ -189,6 +191,60 @@ def _stratified_sample(frame: pl.DataFrame, *, limit: int, seed: int) -> pl.Data
         ]
     )
     return keep
+
+
+def build_manifest_from_country_folders(
+    root: str | Path,
+    *,
+    split: str,
+    extensions: tuple[str, ...] = (".jpg", ".jpeg", ".png"),
+) -> pl.DataFrame:
+    """Build a manifest from a ``<root>/<CountryName>/<image>`` layout.
+
+    This is GeoGuessr-50k's shape (Kaggle
+    ``ubitquitin/geolocation-geoguessr-images-50k``), which carries no id/lat/lon
+    metadata -- country comes from the folder name and nothing else. ``lat``
+    and ``lon`` stay null throughout, unlike :func:`build_manifest`. Folders
+    that fall outside :data:`STREET_VIEW_COUNTRIES` (i.e. resolve to
+    :data:`OTHER`) are dropped for the same reason OSV-5M's out-of-coverage
+    rows are: those answers can never be correct in a real round.
+
+    ``image_id`` is a deterministic hash of the path relative to ``root``, so
+    it is stable across machines and re-runs without any source id to key on.
+    """
+    root = Path(root)
+    if not root.exists():
+        raise FileNotFoundError(f"image root does not exist: {root}")
+
+    rows: list[tuple[int, None, None, str, str, str]] = []
+    for country_dir in sorted(p for p in root.iterdir() if p.is_dir()):
+        code = to_code(country_dir.name)
+        if code == OTHER:
+            continue
+        for image_path in sorted(country_dir.iterdir()):
+            if image_path.suffix.lower() not in extensions:
+                continue
+            key = str(image_path.relative_to(root))
+            image_id = int(hashlib.sha1(key.encode()).hexdigest()[:15], 16)
+            rows.append((image_id, None, None, code, split, str(image_path)))
+
+    frame = pl.DataFrame(
+        rows,
+        schema={
+            "image_id": pl.Int64,
+            "lat": pl.Float64,
+            "lon": pl.Float64,
+            "country": pl.String,
+            "split": pl.String,
+            "path": pl.String,
+        },
+        orient="row",
+    )
+    return (
+        frame.unique(subset=["image_id"], keep="first", maintain_order=True)
+        .select(MANIFEST_COLUMNS)
+        .sort("image_id")
+    )
 
 
 def attach_paths(

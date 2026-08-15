@@ -115,14 +115,18 @@ FULL_FRAME = CropSpec(
 
 GEOGUESSR_16_9 = CropSpec(
     name="geoguessr_16_9",
-    top=0.06,
-    bottom=0.78,
+    top=0.12,
+    bottom=0.55,
     note=(
-        "UNVERIFIED ESTIMATE. Cuts the top status/score strip and the bottom "
-        "band holding the minimap, compass, and guess button. Full width is "
-        "kept because the HUD spans both bottom corners, so trimming sides "
-        "would discard scene without removing UI. Validate with preview() "
-        "against a real fullscreen 16:9 screenshot before trusting results."
+        "Verified 2026-08-15 against real GeoGuessr-50k screenshots (France, "
+        "Japan; both 1536x662) -- cuts the top score box and the bottom band "
+        "holding the minimap, compass, and guess button, confirmed by "
+        "preview(). Full width is kept because the HUD spans both bottom "
+        "corners, so trimming sides would discard scene without removing UI. "
+        "NOT re-validated against a live mss screen capture, which may run "
+        "at a different resolution/aspect ratio than this dataset's fixed "
+        "1536x662 render -- check with preview() before trusting live-serve "
+        "results."
     ),
 )
 

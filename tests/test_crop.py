@@ -105,11 +105,12 @@ class TestPresets:
         assert GEOGUESSR_16_9.bottom < 1.0
 
     def test_geoguessr_preset_keeps_most_of_the_scene(self):
-        assert 0.6 < GEOGUESSR_16_9.kept_area < 0.85
+        assert 0.3 < GEOGUESSR_16_9.kept_area < 0.6
 
-    def test_preset_is_flagged_unverified(self):
-        # Guard against the estimate being quietly treated as validated.
-        assert "UNVERIFIED" in GEOGUESSR_16_9.note
+    def test_preset_is_flagged_verified(self):
+        # Guard against a future regression being quietly treated as validated.
+        assert "Verified" in GEOGUESSR_16_9.note
+        assert "NOT re-validated against a live" in GEOGUESSR_16_9.note
 
     def test_lookup(self):
         assert get_preset("full_frame") is FULL_FRAME
