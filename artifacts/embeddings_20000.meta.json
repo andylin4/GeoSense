@@ -1,0 +1,16 @@
+{
+  "backbone": {
+    "model_id": "geolocal/StreetCLIP",
+    "embed_dim": 768,
+    "image_size": 336,
+    "key": "295b65cced94"
+  },
+  "crop": "full_frame:0.0000,0.0000,1.0000,1.0000",
+  "normalized": true,
+  "n_rows": 20000,
+  "embed_dim": 768,
+  "dtype": "float16",
+  "manifest_sig": "8ff144c5f24b2f3c",
+  "n_done": 20000,
+  "failed_ids": []
+}

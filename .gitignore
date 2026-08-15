@@ -1,0 +1,22 @@
+# Environment
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Regenerable source data (258GB dataset; re-downloads from HuggingFace)
+data_raw/
+
+# CoreML packages are ~1.5GB and regenerable from the backbone
+artifacts/*.mlpackage/
+# NOTE: artifacts/*.npy IS tracked on purpose. At 768-dim fp16 the caches are
+# tens of MB, and they represent ~40 min of GPU time each. A clone without them
+# cannot train a head without re-embedding.
+
+# Self-captured evaluation data (may contain personal screenshots)
+eval_set/
+
+# Credentials -- never commit
+*.key
+kaggle.json
+.env
