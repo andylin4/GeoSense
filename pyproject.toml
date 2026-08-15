@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "GeoGuessr country prediction from screenshots: frozen CLIP backbone + trained country/meta heads"
 requires-python = ">=3.11,<3.12"
 dependencies = [
-    "torch>=2.2",
+    # torch 2.12 dropped macosx_11 wheels in favor of macosx_14; cap on macOS 13.
+    "torch>=2.2,<2.12; sys_platform == 'darwin'",
+    "torch>=2.2; sys_platform != 'darwin'",
     "torchvision>=0.17",
     "transformers>=4.40",
     "pillow>=10.0",

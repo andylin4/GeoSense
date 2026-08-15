@@ -11,31 +11,6 @@ uv sync --extra data --extra dev
 uv run pytest -q
 ```
 
-### Corporate TLS interception (required on this machine)
-
-Cloudflare Zero Trust inspects TLS here, so Python's bundled certifi roots
-reject `huggingface.co` with `CERTIFICATE_VERIFY_FAILED` even though `curl`
-works. The fix is to trust the corporate root, **not** to disable verification.
-
-A combined bundle (certifi + the Cloudflare Gateway CA pulled from the system
-keychain) has been generated at `~/.config/certs/ca-bundle.pem`. Export it
-before anything that hits the network:
-
-```bash
-export SSL_CERT_FILE=~/.config/certs/ca-bundle.pem
-export REQUESTS_CA_BUNDLE=~/.config/certs/ca-bundle.pem
-```
-
-Add those two lines to `~/.zshrc` to stop rebuilding this by hand. To
-regenerate the bundle:
-
-```bash
-security find-certificate -a -c "Gateway CA - Cloudflare Managed G1 184d33c903da5d04b30cce62ce535f28" \
-  -p /Library/Keychains/System.keychain > ~/.config/certs/cloudflare-gateway.pem
-cat "$(uv run python -c 'import certifi; print(certifi.where())')" \
-    ~/.config/certs/cloudflare-gateway.pem > ~/.config/certs/ca-bundle.pem
-```
-
 ## Layout
 
 | Path | Role |
@@ -64,5 +39,5 @@ Verified on this machine, 2026-08-13:
 Phase 0 is built and verified end-to-end on labeled sample images (San
 Francisco → United States 90.2%, Nagasaki → Japan 94.9%).
 
-**Blocked:** the real Phase 0 baseline number needs GeoGuessr-50k from Kaggle,
+**TODO:** the real Phase 0 baseline number needs GeoGuessr-50k from Kaggle,
 which requires credentials at `~/.kaggle/kaggle.json`.
