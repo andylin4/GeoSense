@@ -89,22 +89,3 @@ Germany          7.3%
 | `geoguessr/data/countries.py` | Canonical ~109-class list, ISO codes, cross-dataset name aliases |
 | `geoguessr/data/crop.py` | Fractional crop specs (inference-side only, per decision #6) |
 | `artifacts/` | `manifest.parquet`, `embeddings.npy`, `*.pt`, `temperature.json` |
-
-## Measured facts (differ from the design doc)
-
-Verified on this machine, 2026-08-13:
-
-- StreetCLIP embeddings are **768-dim, not 512** — it is ViT-L/14 based.
-- Its input is **336px, not 224** (`geolocal/StreetCLIP` = ViT-L/14-336).
-- Image encoding costs **~164 ms/img** on MPS (fp16, M-series Air). That is
-  ~55 min for 20k images locally, so bulk embedding belongs on Colab as the
-  design assumed — but the margin is larger than the doc's estimate implies.
-- `logit_scale` is 100.0.
-
-## Status
-
-Phase 0 is built and verified end-to-end on labeled sample images (San
-Francisco → United States 90.2%, Nagasaki → Japan 94.9%).
-
-**TODO:** the real Phase 0 baseline number needs GeoGuessr-50k from Kaggle,
-which requires credentials at `~/.kaggle/kaggle.json`.
