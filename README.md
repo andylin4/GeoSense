@@ -1,15 +1,12 @@
-
-
-
-https://github.com/user-attachments/assets/0b0faf7c-2a5a-4d59-bf09-10ac2c809d75
-
-
-
 # GeoGuessr country prediction
 
 Frozen CLIP backbone + trained country/meta heads. See
 [`geoguessr-model-design.md`](geoguessr-model-design.md) for the design and the
 numbered decisions referenced throughout the code.
+
+## Demo
+
+https://github.com/user-attachments/assets/0b0faf7c-2a5a-4d59-bf09-10ac2c809d75
 
 ## Setup
 
