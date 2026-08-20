@@ -1,15 +1,15 @@
 """Screen crop specification.
 
-Design decision #6: cropping is an inference-side concern only. OSV-5M training
-images are full-frame street photos with no game UI and are used uncultivated
-by this module. What gets cropped is (a) live screen captures and (b)
-GeoGuessr-50k at evaluation time -- and those two must use the *same* rule, or
-the eval number describes a distribution the live tool never sees.
+Cropping is an inference-side concern only. OSV-5M training images are
+full-frame street photos with no game UI and are used uncultivated by this
+module. What gets cropped is (a) live screen captures and (b) GeoGuessr-50k at
+evaluation time -- and those two must use the *same* rule, or the eval number
+describes a distribution the live tool never sees.
 
 Regions are stored as fractions of image size, not pixels, so one spec applies
 to any resolution. The capture surface is still expected to be a fullscreen
-browser at a known aspect ratio (decision #6); fractions make the spec robust
-to display scaling, not a substitute for that constraint.
+browser at a known aspect ratio; fractions make the spec robust to display
+scaling, not a substitute for that constraint.
 
 WARNING: ``GEOGUESSR_16_9`` below is a starting estimate of where the HUD sits.
 It must be checked against a real screenshot before any number produced with it

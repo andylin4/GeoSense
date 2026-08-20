@@ -7,8 +7,8 @@ while changing labels costs nothing. Everything that can invalidate the
 embedding cache lives here and gets recorded in :attr:`Backbone.fingerprint`,
 so a stale ``embeddings.npy`` can be detected instead of silently misused.
 
-Per design decision #1 the default is StreetCLIP, domain-matched to street-level
-imagery. The backbone is always frozen; nothing in this project fine-tunes it.
+The default is StreetCLIP, domain-matched to street-level imagery. The
+backbone is always frozen; nothing in this project fine-tunes it.
 """
 
 from __future__ import annotations

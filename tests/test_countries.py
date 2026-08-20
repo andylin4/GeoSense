@@ -104,7 +104,7 @@ class TestToCode:
             assert to_code(part) == "GB"
 
     def test_unknown_falls_into_other_rather_than_raising(self):
-        # Keeping the label space closed is the whole point of decision #4.
+        # Keeping the label space closed is the whole point of the fixed class list.
         assert to_code("Atlantis") == OTHER
         assert to_code("Cote d Ivoire") == OTHER  # no Street View coverage
         assert to_code("") == OTHER

@@ -6,7 +6,7 @@ is close to a hard constraint on geography -- if a country was only ever driven
 with Gen 4, a confident Gen 2 reading eliminates it -- so a large fraction of
 the world can drop out before vegetation is considered at all.
 
-The design's rule, kept deliberately simple for v1:
+The fusion rule, kept deliberately simple for v1:
 
     s'_c = s_c * P(g_hat | c)
 

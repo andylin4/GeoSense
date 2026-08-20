@@ -176,10 +176,10 @@ def main() -> int:
     labels = np.asarray(labels)
     log(f"  {embeddings.shape[0]} x {embeddings.shape[1]}")
 
-    # Decision #2: can the meta head share the embedding space at all?
+    # Can the meta head share the embedding space at all?
     print()
     print("=" * 66)
-    print("DESIGN DECISION #2 -- does CLIP retain camera generation?")
+    print("DOES CLIP RETAIN CAMERA GENERATION?")
     print("=" * 66)
     diagnosis = diagnose_meta_signal(embeddings, labels)
     print(diagnosis.summary())

@@ -1,8 +1,6 @@
 # GeoGuessr country prediction
 
-Frozen CLIP backbone + trained country/meta heads. See
-[`geoguessr-model-design.md`](geoguessr-model-design.md) for the design and the
-numbered decisions referenced throughout the code.
+Frozen CLIP backbone + trained country/meta heads.
 
 ## Demo
 
@@ -64,8 +62,7 @@ Germany          7.3%
 - **The percentages are the model's calibrated confidence**, not a similarity
   score — if calibration is working, "34%" should be right about a third of
   the time it's said, not just the highest number in an arbitrary softmax.
-  They're produced by temperature scaling fit on held-out data (see
-  `geoguessr-model-design.md` §3, "Calibration").
+  They're produced by temperature scaling fit on held-out data.
 - **`(uncalibrated)` next to the hotkey means no temperature file was found**
   for the loaded `--tag`, so the percentages are raw softmax output and will
   read as overconfident or underconfident — treat them as a ranking only, not
@@ -91,5 +88,5 @@ Germany          7.3%
 | `geoguessr/eval/baselines.py` | Zero-shot CLIP, coverage-prior, and uniform predict_fns |
 | `geoguessr/embed/backbone.py` | Frozen StreetCLIP loader + fingerprint (guards the embedding cache) |
 | `geoguessr/data/countries.py` | Canonical ~109-class list, ISO codes, cross-dataset name aliases |
-| `geoguessr/data/crop.py` | Fractional crop specs (inference-side only, per decision #6) |
+| `geoguessr/data/crop.py` | Fractional crop specs (inference-side only) |
 | `artifacts/` | `manifest.parquet`, `embeddings.npy`, `*.pt`, `temperature.json` |

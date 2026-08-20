@@ -4,8 +4,8 @@ Three datasets spell countries three different ways -- OSV-5M, Natural Earth,
 and GeoGuessr-50k -- so ISO 3166-1 alpha-2 codes are the canonical identifier
 here and display names are only ever a presentation detail.
 
-The class list implements design decision #4: exactly 100 classes covering
-countries with real Google Street View coverage.
+The class list is exactly 100 classes covering countries with real Google
+Street View coverage.
 
 ``OTHER`` ("XX") is a *filter sentinel*, not a trainable class. :func:`to_code`
 returns it for anything outside the list, and the manifest builder drops those
@@ -223,7 +223,7 @@ def to_code(name_or_code: str, *, default: str = OTHER) -> str:
     """Resolve any spelling (or an alpha-2 code) to a canonical class code.
 
     Anything not in the Street View list resolves to ``OTHER`` rather than
-    raising, which is what keeps the label space closed per decision #4.
+    raising, which is what keeps the label space closed.
     """
     if not name_or_code:
         return default
@@ -268,9 +268,9 @@ def class_index(*, include_other: bool = False) -> dict[str, int]:
 def audit_coverage(dataset_names: list[str]) -> dict[str, list[str]]:
     """Compare a dataset's country names against this class list.
 
-    Run this once GeoGuessr-50k and OSV-5M are on disk to reconcile decision #4:
-    ``unmapped`` names are falling into the OTHER bucket and may deserve a class
-    or an alias; ``unused`` classes have no data behind them at all.
+    Run this once GeoGuessr-50k and OSV-5M are on disk to reconcile the class
+    list: ``unmapped`` names are falling into the OTHER bucket and may deserve
+    a class or an alias; ``unused`` classes have no data behind them at all.
     """
     seen: set[str] = set()
     unmapped: list[str] = []

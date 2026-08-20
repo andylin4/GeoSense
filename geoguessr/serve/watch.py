@@ -2,8 +2,8 @@
 
 Polling the screen and encoding every frame would pin the GPU for no benefit: a
 GeoGuessr scene is static most of the time, and a CLIP encode costs ~120x more
-than a screen grab. The design doc's own warning applies directly -- sustained
-MPS load on a fanless Air thermally throttles.
+than a screen grab. Sustained MPS load on a fanless Air thermally throttles,
+so this matters in practice, not just in theory.
 
 So this is change-triggered rather than interval-triggered:
 

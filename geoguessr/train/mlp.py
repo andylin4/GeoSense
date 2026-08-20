@@ -4,9 +4,9 @@ The linear probe answers "do these embeddings carry geography at all". This
 answers "how much is left on the table". It trains on the same cached
 embeddings, so a run is minutes of CPU -- no images are decoded.
 
-Imbalance is still handled by reweighting, not resampling (decision #5); here
-that is ``CrossEntropyLoss(weight=...)`` with inverse-frequency weights, the
-direct equivalent of sklearn's ``class_weight="balanced"``.
+Imbalance is still handled by reweighting, not resampling; here that is
+``CrossEntropyLoss(weight=...)`` with inverse-frequency weights, the direct
+equivalent of sklearn's ``class_weight="balanced"``.
 
 Subclasses :class:`~geoguessr.train.head.BaseHead`, so it drops into the same
 harness and the same serving path as the linear probe with no other changes.

@@ -6,7 +6,7 @@ column, which is exactly the payoff of keeping labels out of the embedding
 cache: the same vectors serve both tracks.
 
 The interesting part is not the classifier. It is
-:func:`diagnose_meta_signal`, which answers **design decision #2**: does CLIP
+:func:`diagnose_meta_signal`, which answers the open question: does CLIP
 retain camera-generation information at all?
 
 CLIP is trained to match images to captions, so it has every incentive to
@@ -99,8 +99,7 @@ class MetaDiagnosis:
             "the meta head can share the embedding cache."
             if self.signal_present
             else "NO USABLE SIGNAL -- CLIP appears to discard camera "
-                 "generation. The meta head needs its own CNN on raw pixels "
-                 "(design decision #2)."
+                 "generation. The meta head needs its own CNN on raw pixels."
         )
         return "\n".join(
             [
@@ -123,7 +122,7 @@ def diagnose_meta_signal(
     margin_threshold: float = 0.10,
     seed: int = 0,
 ) -> MetaDiagnosis:
-    """Settle design decision #2 with a cheap measurement.
+    """Settle whether CLIP retains camera-generation signal, cheaply.
 
     Fits a linear probe for camera generation and compares it against always
     predicting the most common generation. A linear probe is the right test:

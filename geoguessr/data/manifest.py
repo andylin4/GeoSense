@@ -4,12 +4,11 @@ Turns raw OSV-5M metadata into ``manifest.parquet`` -- the contract with Phase
 2. Phase 2 never learns where the images came from, so swapping data sources
 later means rewriting only this module.
 
-Two deviations from the design doc, both discovered on 2026-08-13:
+Two deviations from the original plan, both discovered on 2026-08-13:
 
 * **No Natural Earth join.** OSV-5M already ships ISO alpha-2 country codes, so
   the point-in-polygon step (and DuckDB's spatial extension) is unnecessary. We
-  accept upstream's labels, which is the same posture the review settled on for
-  disputed borders.
+  accept upstream's labels, including for disputed borders.
 * **OTHER rows are dropped, not bucketed.** See :mod:`geoguessr.data.countries`.
 
 The manifest stores the country *code*, never an integer class index. Label
@@ -55,9 +54,9 @@ def build_manifest(
         csv_path: OSV-5M ``train.csv`` or ``test.csv``.
         split: value written to the ``split`` column, e.g. ``"train"``.
         limit: total rows to keep. ``None`` keeps everything.
-        strategy: ``"random"`` preserves OSV-5M's natural class distribution,
-            which is what decision #5 assumes -- imbalance is corrected by
-            loss reweighting at train time, not by resampling here.
+        strategy: ``"random"`` preserves OSV-5M's natural class distribution --
+            imbalance is corrected by loss reweighting at train time, not by
+            resampling here.
             ``"stratified"`` instead draws as evenly across countries as the
             data allows, which is useful for a small pipeline-proving subset
             where random sampling would leave rare countries empty.

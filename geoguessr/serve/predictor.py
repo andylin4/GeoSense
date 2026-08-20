@@ -149,5 +149,5 @@ class Predictor:
 
 
 def format_guesses(guesses: list[Guess]) -> str:
-    """Render a ranked list the way the design's example output shows it."""
+    """Render a ranked list, one country per line, most likely first."""
     return "\n".join(str(g) for g in guesses)

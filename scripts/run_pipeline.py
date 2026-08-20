@@ -1,8 +1,7 @@
 """End-to-end Phase 1 -> 3 run: manifest -> embeddings -> probe -> harness.
 
-This is the "prove the pipeline at small scale" loop from the design's
-suggested sequencing. Start small (``--limit 2000``) so a mistake costs minutes
-rather than an hour, then scale.
+This is the "prove the pipeline at small scale" loop. Start small
+(``--limit 2000``) so a mistake costs minutes rather than an hour, then scale.
 
     uv run python scripts/run_pipeline.py --limit 2000
     uv run python scripts/run_pipeline.py --limit 20000

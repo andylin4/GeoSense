@@ -2,8 +2,8 @@
 
 Encoding one image is the whole inference cost -- the heads are a matrix
 multiply. Measured on this machine the PyTorch/MPS path runs ~1.2s per image
-against the design's 50ms target, so this is the difference between a tool that
-feels instant and one you stop reaching for.
+against a ~50ms target, so this is the difference between a tool that feels
+instant and one you stop reaching for.
 
 Only the **vision tower** is converted. Text encoding is used exactly once, by
 the zero-shot baseline, and never on the live path. The heads stay in numpy.

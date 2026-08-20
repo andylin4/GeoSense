@@ -6,9 +6,9 @@ linear probe reaches reasonable accuracy the embeddings carry geography and an
 MLP will add a few points; if it is near chance, something upstream is broken
 and no architecture will rescue it.
 
-Class imbalance is handled here by **reweighting the loss**, not resampling
-(decision #5). Every training image stays in play, and the correction is one
-uniform transformation that temperature scaling can still undo cleanly.
+Class imbalance is handled here by **reweighting the loss**, not resampling.
+Every training image stays in play, and the correction is one uniform
+transformation that temperature scaling can still undo cleanly.
 
 The head exposes two adapters, both of which plug into the same
 :func:`geoguessr.eval.harness.evaluate`:
@@ -193,9 +193,9 @@ def train_linear_probe(
 ) -> CountryHead:
     """Fit multinomial logistic regression on cached embeddings.
 
-    ``class_weight="balanced"`` is decision #5 in one argument: it scales each
-    class's contribution by inverse frequency, so the US does not drown out
-    Slovenia, without discarding or duplicating a single row.
+    ``class_weight="balanced"`` handles imbalance in one argument: it scales
+    each class's contribution by inverse frequency, so the US does not drown
+    out Slovenia, without discarding or duplicating a single row.
     """
     from sklearn.linear_model import LogisticRegression
 
