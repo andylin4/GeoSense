@@ -1,6 +1,9 @@
 
 
-https://github.com/user-attachments/assets/2bf2f28c-3db1-4824-8886-0f5ca31b844a
+
+https://github.com/user-attachments/assets/0b0faf7c-2a5a-4d59-bf09-10ac2c809d75
+
+
 
 # GeoGuessr country prediction
 
