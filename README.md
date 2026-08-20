@@ -1,3 +1,7 @@
+
+
+https://github.com/user-attachments/assets/2bf2f28c-3db1-4824-8886-0f5ca31b844a
+
 # GeoGuessr country prediction
 
 Frozen CLIP backbone + trained country/meta heads. See
